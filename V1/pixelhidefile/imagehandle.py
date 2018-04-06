@@ -30,20 +30,24 @@ class HideImage(object):
 		self.imagearrayshape = self.imagearray.shape
 		self.__pixelseek = 0
 	
-	def set_pixelseek(self,pixelseek):
-		"""设置图片像素点游标
-		Args:
-			pixelseek: 像素点游标值(int)
-		"""	
-		self.__pixelseek = pixelseek
-		
-	def get_pixelseek(self):
+	@property
+	def pixelseek(self):
 		"""获取图片当前像素点游标
 		Returns:
 			self.__pixelseek: 像素点游标值(int)
 		"""	
 		return self.__pixelseek
-	
+		
+	@pixelseek.setter
+	def pixelseek(self,value):
+		"""设置图片像素点游标
+		Args:
+			pixelseek: 像素点游标值(int)
+		"""	
+		if not isinstance(value, int):
+			raise ValueError('pixelseek must be an integer!')
+		self.__pixelseek = value
+		
 	def is_even(self,num):
 		"""判断数值是否为偶数
 		Args:
@@ -261,7 +265,7 @@ def test(imagefilename):
 	image_path = os.path.join(root_dir,imagefilename)
 	createfilename = os.path.splitext(image_path)[0]
 	im1 = HideImage(image_path)
-	im1.set_pixelseek(0)
+	im1.pixelseek = 0
 	#datas = [0x12,0x13,0x14]
 	#datas = 'hello world!'
 	datas = '你好!'
@@ -269,7 +273,7 @@ def test(imagefilename):
 	im1.save_change(createfilename)
 	
 	im2 = HideImage(createfilename+'.png')
-	im2.set_pixelseek(0)
+	im2.pixelseek = 0
 	bytes = im2.read_pixels(len(datas.encode('utf-8')))
 	print(bytes.decode('utf-8'))
 	

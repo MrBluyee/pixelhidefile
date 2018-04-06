@@ -47,11 +47,11 @@ def hide_file_to_image(file_path,image_path,encryption='no'):
 	file_size_remainder = file.filesize % 100
 	if file_size_quotients > 0:
 		for i in range(0,file_size_quotients):
-			file.set_fileseek(100 * i)
-			file_data = file.read_filedatas(file.get_fileseek(),100)
+			file.fileseek = 100 * i
+			file_data = file.read_filedatas(file.fileseek,100)
 			img.write_pixels(file_data)
-		file.set_fileseek(100 * file_size_quotients)	
-	file_data = file.read_filedatas(file.get_fileseek(),file_size_remainder)
+		file.fileseek = 100 * file_size_quotients	
+	file_data = file.read_filedatas(file.fileseek,file_size_remainder)
 	img.write_pixels(file_data)
 	img.save_change(os.path.splitext(file_path)[0])
 	
@@ -74,7 +74,7 @@ def read_file_from_image(image_path,created_file_path=''):
 		while not b'}' in headmsg_temp:
 			headmsg_temp += img.read_pixels(1)
 	headmsg_seek = headmsg_temp.index(b'}')
-	img.set_pixelseek((headmsg_seek + 1) * 2)
+	img.pixelseek = (headmsg_seek + 1) * 2
 	headmsg_temp = headmsg_temp[:headmsg_seek+1]
 	headmsg = eval(headmsg_temp)
 	print(headmsg)

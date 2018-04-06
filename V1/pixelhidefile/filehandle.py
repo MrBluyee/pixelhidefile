@@ -23,20 +23,24 @@ class HideFile(object):
 		self.filename = os.path.split(self.filepath)[1]
 		self.fileMD5 = self.get_fileMD5()
 		self.__fileseek = 0
-	
-	def set_fileseek(self,fileseek):
-		"""设置文件游标
-		Args:
-			fileseek: 文件游标值(int)
-		"""	
-		self.__fileseek = fileseek
 		
-	def get_fileseek(self):
+	@property
+	def fileseek(self):
 		"""获取文件当前位置游标
 		Returns:
 			self.__fileseek: 文件当前游标值(int)
 		"""	
 		return self.__fileseek
+	
+	@fileseek.setter
+	def fileseek(self,value):
+		"""设置文件游标
+		Args:
+			fileseek: 文件游标值(int)
+		"""	
+		if not isinstance(value, int):
+			raise ValueError('fileseek must be an integer!')
+		self.__fileseek = value
 	
 	def get_filesize(self):
 		"""获取文件大小(单位:bytes)
